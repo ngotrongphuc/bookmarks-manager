@@ -1,45 +1,127 @@
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core'
-import { SortableContext, sortableKeyboardCoordinates, rectSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { BookmarkCard } from './BookmarkCard'
+import { FolderCard } from './FolderCard'
 import { AddBookmarkCard } from './AddBookmarkCard'
-import type { EnrichedBookmark, Settings } from '@/types'
+import type { EnrichedBookmark, EnrichedFolder, Settings } from '@/types'
+
+type GridItem =
+  | { kind: 'folder'; data: EnrichedFolder }
+  | { kind: 'bookmark'; data: EnrichedBookmark }
 
 type BookmarkGridProps = {
+  folders: EnrichedFolder[]
   bookmarks: EnrichedBookmark[]
   settings: Pick<Settings, 'cardStyle' | 'cardOpacity' | 'gridSize' | 'columns'>
   onReorder: (orderedIds: string[]) => void
   onAddBookmark: () => void
-  onContextMenu: (e: React.MouseEvent, chromeId: string) => void
+  onOpenFolder: (folderId: string) => void
+  onBookmarkContextMenu: (e: React.MouseEvent, chromeId: string) => void
+  onFolderContextMenu: (e: React.MouseEvent, folderId: string) => void
 }
 
-function SortableBookmarkCard({ bookmark, settings, onContextMenu }: {
-  bookmark: EnrichedBookmark; settings: BookmarkGridProps['settings']; onContextMenu: (e: React.MouseEvent) => void
+function SortableItem({
+  item,
+  settings,
+  onOpenFolder,
+  onBookmarkContextMenu,
+  onFolderContextMenu,
+}: {
+  item: GridItem
+  settings: BookmarkGridProps['settings']
+  onOpenFolder: (id: string) => void
+  onBookmarkContextMenu: (e: React.MouseEvent) => void
+  onFolderContextMenu: (e: React.MouseEvent) => void
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: bookmark.chromeId })
+  const id = item.kind === 'folder' ? item.data.chromeId : item.data.chromeId
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id })
   const style = { transform: CSS.Transform.toString(transform), transition }
+
+  if (item.kind === 'folder') {
+    return (
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <FolderCard
+          title={item.data.title}
+          icon={item.data.icon}
+          color={item.data.color}
+          bookmarkCount={item.data.bookmarkCount}
+          cardStyle={settings.cardStyle}
+          cardOpacity={settings.cardOpacity}
+          gridSize={settings.gridSize}
+          onClick={() => onOpenFolder(item.data.chromeId)}
+          onContextMenu={onFolderContextMenu}
+        />
+      </div>
+    )
+  }
+
+  const bm = item.data
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <BookmarkCard title={bookmark.customTitle ?? bookmark.title} url={bookmark.url}
-        thumbnail={bookmark.thumbnail} cardStyle={settings.cardStyle} cardOpacity={settings.cardOpacity}
-        gridSize={settings.gridSize} accentColor={bookmark.accentColor} onContextMenu={onContextMenu} />
+      <BookmarkCard
+        title={bm.customTitle ?? bm.title}
+        url={bm.url}
+        thumbnail={bm.thumbnail}
+        cardStyle={settings.cardStyle}
+        cardOpacity={settings.cardOpacity}
+        gridSize={settings.gridSize}
+        accentColor={bm.accentColor}
+        onContextMenu={onBookmarkContextMenu}
+      />
     </div>
   )
 }
 
-/** Sortable grid of bookmark cards with drag-and-drop */
-export function BookmarkGrid({ bookmarks, settings, onReorder, onAddBookmark, onContextMenu }: BookmarkGridProps) {
+/** Grid showing folders first, then bookmarks, with drag-and-drop */
+export function BookmarkGrid({
+  folders,
+  bookmarks,
+  settings,
+  onReorder,
+  onAddBookmark,
+  onOpenFolder,
+  onBookmarkContextMenu,
+  onFolderContextMenu,
+}: BookmarkGridProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   )
+
+  // Folders first, then bookmarks
+  const items: GridItem[] = [
+    ...folders.map((f) => ({ kind: 'folder' as const, data: f })),
+    ...bookmarks.map((b) => ({ kind: 'bookmark' as const, data: b })),
+  ]
+
+  const allIds = items.map((item) => item.data.chromeId)
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
     if (!over || active.id === over.id) return
+
+    // Only reorder bookmarks among themselves for now
     const oldIndex = bookmarks.findIndex((b) => b.chromeId === active.id)
     const newIndex = bookmarks.findIndex((b) => b.chromeId === over.id)
     if (oldIndex === -1 || newIndex === -1) return
+
     const reordered = [...bookmarks]
     const [moved] = reordered.splice(oldIndex, 1)
     reordered.splice(newIndex, 0, moved!)
@@ -47,13 +129,35 @@ export function BookmarkGrid({ bookmarks, settings, onReorder, onAddBookmark, on
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={bookmarks.map((b) => b.chromeId)} strategy={rectSortingStrategy}>
-        <div className="grid justify-center gap-4 p-4"
-          style={{ gridTemplateColumns: `repeat(${settings.columns}, max-content)` }}>
-          {bookmarks.map((bookmark) => (
-            <SortableBookmarkCard key={bookmark.chromeId} bookmark={bookmark} settings={settings}
-              onContextMenu={(e) => onContextMenu(e, bookmark.chromeId)} />
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={allIds} strategy={rectSortingStrategy}>
+        <div
+          className="grid justify-center gap-4 p-4"
+          style={{
+            gridTemplateColumns: `repeat(${settings.columns}, max-content)`,
+          }}
+        >
+          {items.map((item) => (
+            <SortableItem
+              key={item.data.chromeId}
+              item={item}
+              settings={settings}
+              onOpenFolder={onOpenFolder}
+              onBookmarkContextMenu={(e) =>
+                item.kind === 'bookmark'
+                  ? onBookmarkContextMenu(e, item.data.chromeId)
+                  : undefined
+              }
+              onFolderContextMenu={(e) =>
+                item.kind === 'folder'
+                  ? onFolderContextMenu(e, item.data.chromeId)
+                  : undefined
+              }
+            />
           ))}
           <AddBookmarkCard gridSize={settings.gridSize} onClick={onAddBookmark} />
         </div>
