@@ -17,6 +17,7 @@ type FolderCardProps = {
   cardBackdropColor: string
   cardBorderRadius: number
   cardBlur: number
+  cardOpacity: number
   gridSize: Settings['gridSize']
   onClick: () => void
   onContextMenu: (e: React.MouseEvent) => void
@@ -43,6 +44,7 @@ export function FolderCard({
   cardBackdropColor,
   cardBorderRadius,
   cardBlur,
+  cardOpacity,
   gridSize,
   onClick,
   onContextMenu,
@@ -56,6 +58,7 @@ export function FolderCard({
     borderRadius: `${cardBorderRadius}px`,
     backdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
     WebkitBackdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
+    opacity: cardOpacity,
   }
 
   return (

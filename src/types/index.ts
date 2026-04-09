@@ -24,6 +24,7 @@ export type Settings = {
   cardBackdropColor: string
   cardBorderRadius: number
   cardBlur: number
+  cardOpacity: number
   fontFamily: string
   gridSize: 'small' | 'medium' | 'large'
   columns: number
@@ -80,6 +81,7 @@ export const DEFAULT_SETTINGS: Settings = {
   cardBackdropColor: 'rgba(255,255,255,0.1)',
   cardBorderRadius: 12,
   cardBlur: 12,
+  cardOpacity: 1,
   fontFamily: 'system-ui, -apple-system, sans-serif',
   gridSize: 'medium',
   columns: 4,
