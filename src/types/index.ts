@@ -80,7 +80,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'dark',
   accentColor: '#3b82f6',
   cardStyle: 'rounded',
-  fontFamily: 'Inter',
+  fontFamily: 'system-ui, -apple-system, sans-serif',
   cardOpacity: 0.9,
   gridSize: 'medium',
   columns: 4,

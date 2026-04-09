@@ -3,7 +3,19 @@ import { cn } from '@/lib/cn'
 import type { Settings } from '@/types'
 import { DEFAULT_SETTINGS } from '@/types'
 
-const FONT_OPTIONS = ['Inter', 'System UI', 'Roboto', 'Open Sans', 'Lato', 'Poppins', 'Montserrat', 'Raleway', 'Nunito']
+const FONT_OPTIONS = [
+  { label: 'System Default', value: 'system-ui, -apple-system, sans-serif' },
+  { label: 'Arial', value: 'Arial, Helvetica, sans-serif' },
+  { label: 'Segoe UI', value: '"Segoe UI", Tahoma, sans-serif' },
+  { label: 'Verdana', value: 'Verdana, Geneva, sans-serif' },
+  { label: 'Tahoma', value: 'Tahoma, Geneva, sans-serif' },
+  { label: 'Trebuchet MS', value: '"Trebuchet MS", sans-serif' },
+  { label: 'Georgia', value: 'Georgia, "Times New Roman", serif' },
+  { label: 'Times New Roman', value: '"Times New Roman", Times, serif' },
+  { label: 'Courier New', value: '"Courier New", Courier, monospace' },
+  { label: 'Consolas', value: 'Consolas, "Courier New", monospace' },
+  { label: 'Comic Sans MS', value: '"Comic Sans MS", cursive' },
+]
 
 type SettingsPanelProps = {
   settings: Settings
@@ -94,7 +106,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
         <Section title="Font">
           <select value={settings.fontFamily} onChange={(e) => onUpdate({ fontFamily: e.target.value })}
             className="w-full rounded-lg bg-slate-700 px-3 py-2 text-sm text-white outline-none">
-            {FONT_OPTIONS.map((font) => (<option key={font} value={font}>{font}</option>))}
+            {FONT_OPTIONS.map((font) => (<option key={font.label} value={font.value} style={{ fontFamily: font.value }}>{font.label}</option>))}
           </select>
         </Section>
 
