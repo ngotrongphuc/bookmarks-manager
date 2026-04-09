@@ -26,7 +26,7 @@ type GridItem =
 type BookmarkGridProps = {
   folders: EnrichedFolder[]
   bookmarks: EnrichedBookmark[]
-  settings: Pick<Settings, 'cardStyle' | 'cardOpacity' | 'gridSize' | 'columns' | 'gap'>
+  settings: Pick<Settings, 'cardBackdropColor' | 'cardBorderRadius' | 'cardBlur' | 'gridSize' | 'columns' | 'gap'>
   onReorder: (orderedIds: string[]) => void
   onAddBookmark: () => void
   onOpenFolder: (folderId: string) => void
@@ -61,8 +61,9 @@ function SortableItem({
           color={item.data.color}
           bookmarkCount={item.data.bookmarkCount}
           previewItems={item.data.previewItems}
-          cardStyle={settings.cardStyle}
-          cardOpacity={settings.cardOpacity}
+          cardBackdropColor={settings.cardBackdropColor}
+          cardBorderRadius={settings.cardBorderRadius}
+          cardBlur={settings.cardBlur}
           gridSize={settings.gridSize}
           onClick={() => onOpenFolder(item.data.chromeId)}
           onContextMenu={onFolderContextMenu}
@@ -78,7 +79,7 @@ function SortableItem({
         title={bm.customTitle ?? bm.title}
         url={bm.url}
         thumbnail={bm.thumbnail}
-        cardStyle={settings.cardStyle}
+        cardBorderRadius={settings.cardBorderRadius}
         gridSize={settings.gridSize}
         onContextMenu={onBookmarkContextMenu}
       />

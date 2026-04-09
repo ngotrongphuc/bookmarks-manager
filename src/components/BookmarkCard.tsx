@@ -6,7 +6,7 @@ type BookmarkCardProps = {
   title: string
   url: string
   thumbnail: string | null
-  cardStyle: Settings['cardStyle']
+  cardBorderRadius: number
   gridSize: Settings['gridSize']
   onContextMenu: (e: React.MouseEvent) => void
   className?: string
@@ -17,7 +17,7 @@ export function BookmarkCard({
   title,
   url,
   thumbnail,
-  cardStyle,
+  cardBorderRadius,
   gridSize,
   onContextMenu,
   className,
@@ -46,11 +46,12 @@ export function BookmarkCard({
           className={cn(
             'flex items-center justify-center overflow-hidden',
             thumbnail ? 'shadow-md' : '',
-            cardStyle === 'rounded' && 'rounded-xl',
-            cardStyle === 'sharp' && 'rounded-none',
-            cardStyle === 'glass' && 'rounded-xl',
           )}
-          style={{ width: size.width, height: size.height }}
+          style={{
+            width: size.width,
+            height: size.height,
+            borderRadius: `${cardBorderRadius}px`,
+          }}
         >
           <img
             src={imgSrc}

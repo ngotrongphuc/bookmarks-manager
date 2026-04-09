@@ -17,6 +17,28 @@ const FONT_OPTIONS = [
   { label: 'Comic Sans MS', value: '"Comic Sans MS", cursive' },
 ]
 
+/** Extract hex color from rgba string */
+function rgbaToHex(rgba: string): string {
+  const match = rgba.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
+  if (!match) return '#ffffff'
+  const [, r, g, b] = match
+  return `#${Number(r).toString(16).padStart(2, '0')}${Number(g).toString(16).padStart(2, '0')}${Number(b).toString(16).padStart(2, '0')}`
+}
+
+/** Extract alpha from rgba string */
+function rgbaAlpha(rgba: string): number {
+  const match = rgba.match(/rgba?\(\d+,\s*\d+,\s*\d+,?\s*([\d.]+)?\)/)
+  return match?.[1] != null ? Number(match[1]) : 1
+}
+
+/** Convert hex + alpha to rgba string */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r},${g},${b},${alpha})`
+}
+
 type SettingsPanelProps = {
   settings: Settings
   onUpdate: (partial: Partial<Settings>) => void
@@ -74,14 +96,36 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
         </Section>
 
         <Section title="Card Style">
-          <div className="flex gap-2">
-            {(['rounded', 'sharp', 'glass'] as const).map((style) => (
-              <button key={style} onClick={() => onUpdate({ cardStyle: style })}
-                className={cn('flex-1 rounded-lg py-1.5 text-sm',
-                  settings.cardStyle === style ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white/60 hover:text-white')}>
-                {style[0]!.toUpperCase() + style.slice(1)}
-              </button>
-            ))}
+          <div className="space-y-3">
+            <div>
+              <label className="mb-1 block text-xs text-white/50">Backdrop Color</label>
+              <input type="color" value={rgbaToHex(settings.cardBackdropColor)}
+                onChange={(e) => {
+                  const alpha = rgbaAlpha(settings.cardBackdropColor)
+                  onUpdate({ cardBackdropColor: hexToRgba(e.target.value, alpha) })
+                }}
+                className="h-8 w-full cursor-pointer rounded bg-slate-700" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/50">Backdrop Opacity — {Math.round(rgbaAlpha(settings.cardBackdropColor) * 100)}%</label>
+              <input type="range" min={0} max={1} step={0.05}
+                value={rgbaAlpha(settings.cardBackdropColor)}
+                onChange={(e) => {
+                  const hex = rgbaToHex(settings.cardBackdropColor)
+                  onUpdate({ cardBackdropColor: hexToRgba(hex, Number(e.target.value)) })
+                }}
+                className="w-full" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/50">Border Radius — {settings.cardBorderRadius}px</label>
+              <input type="range" min={0} max={24} step={2} value={settings.cardBorderRadius}
+                onChange={(e) => onUpdate({ cardBorderRadius: Number(e.target.value) })} className="w-full" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-white/50">Blur — {settings.cardBlur}px</label>
+              <input type="range" min={0} max={24} step={2} value={settings.cardBlur}
+                onChange={(e) => onUpdate({ cardBlur: Number(e.target.value) })} className="w-full" />
+            </div>
           </div>
         </Section>
 
@@ -90,11 +134,6 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
             className="w-full rounded-lg bg-slate-700 px-3 py-2 text-sm text-white outline-none">
             {FONT_OPTIONS.map((font) => (<option key={font.label} value={font.value} style={{ fontFamily: font.value }}>{font.label}</option>))}
           </select>
-        </Section>
-
-        <Section title={`Card Opacity — ${Math.round(settings.cardOpacity * 100)}%`}>
-          <input type="range" min={0} max={1} step={0.05} value={settings.cardOpacity}
-            onChange={(e) => onUpdate({ cardOpacity: Number(e.target.value) })} className="w-full" />
         </Section>
 
         <Section title="Grid Size">

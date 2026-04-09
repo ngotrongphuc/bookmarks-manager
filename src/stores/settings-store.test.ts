@@ -12,7 +12,7 @@ describe('settings-store', () => {
   it('has default settings', () => {
     const state = useSettingsStore.getState()
     expect(state.columns).toBe(4)
-    expect(state.cardStyle).toBe('rounded')
+    expect(state.cardBorderRadius).toBe(12)
     expect(state.gridSize).toBe('medium')
   })
 
@@ -20,7 +20,7 @@ describe('settings-store', () => {
     useSettingsStore.getState().updateSettings({ columns: 6 })
     const state = useSettingsStore.getState()
     expect(state.columns).toBe(6)
-    expect(state.cardStyle).toBe('rounded')
+    expect(state.cardBorderRadius).toBe(12)
   })
 
   it('loadSettings reads from chrome storage', async () => {

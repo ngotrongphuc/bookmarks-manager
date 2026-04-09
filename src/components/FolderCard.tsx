@@ -13,10 +13,10 @@ type FolderCardProps = {
   icon?: string
   color?: string
   bookmarkCount: number
-  /** First 4 bookmarks/subfolders for the preview grid */
   previewItems: PreviewItem[]
-  cardStyle: Settings['cardStyle']
-  cardOpacity: number
+  cardBackdropColor: string
+  cardBorderRadius: number
+  cardBlur: number
   gridSize: Settings['gridSize']
   onClick: () => void
   onContextMenu: (e: React.MouseEvent) => void
@@ -40,8 +40,9 @@ export function FolderCard({
   color,
   bookmarkCount,
   previewItems,
-  cardStyle,
-  cardOpacity,
+  cardBackdropColor,
+  cardBorderRadius,
+  cardBlur,
   gridSize,
   onClick,
   onContextMenu,
@@ -50,27 +51,22 @@ export function FolderCard({
   const size = GRID_SIZE_MAP[gridSize]
   const previews = previewItems.slice(0, 4)
 
-  const cardClasses = cn(
-    'group relative flex flex-col overflow-hidden transition-all duration-200',
-    'hover:-translate-y-1 hover:shadow-lg cursor-pointer',
-    cardStyle === 'rounded' && 'rounded-xl',
-    cardStyle === 'sharp' && 'rounded-none',
-    cardStyle === 'glass' && 'rounded-xl backdrop-blur-md border border-white/20',
-    className,
-  )
-
-  const bgStyle: React.CSSProperties = {
-    backgroundColor:
-      cardStyle === 'glass'
-        ? `rgba(255,255,255,${0.1 * cardOpacity})`
-        : `rgba(30,41,59,${cardOpacity})`,
+  const cardStyle: React.CSSProperties = {
+    backgroundColor: cardBackdropColor,
+    borderRadius: `${cardBorderRadius}px`,
+    backdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
+    WebkitBackdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
   }
 
   return (
     <div
       data-folder-card
-      className={cardClasses}
-      style={bgStyle}
+      className={cn(
+        'group relative flex flex-col overflow-hidden border border-white/10 transition-all duration-200',
+        'hover:-translate-y-1 hover:shadow-lg cursor-pointer',
+        className,
+      )}
+      style={cardStyle}
       onClick={onClick}
       onContextMenu={onContextMenu}
     >
@@ -107,7 +103,6 @@ export function FolderCard({
         )}
       </div>
 
-      {/* Color accent bar */}
       {color && (
         <div
           className="mx-auto h-0.5 w-8 rounded-full"

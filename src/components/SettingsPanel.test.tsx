@@ -9,18 +9,12 @@ describe('SettingsPanel', () => {
     expect(screen.getByText('Settings')).toBeTruthy()
   })
 
-  it('renders card style options', () => {
+  it('renders card style controls', () => {
     render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={vi.fn()} onClose={vi.fn()} />)
-    expect(screen.getByText('Rounded')).toBeTruthy()
-    expect(screen.getByText('Sharp')).toBeTruthy()
-    expect(screen.getByText('Glass')).toBeTruthy()
-  })
-
-  it('calls onUpdate when card style changes', () => {
-    const onUpdate = vi.fn()
-    render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={onUpdate} onClose={vi.fn()} />)
-    fireEvent.click(screen.getByText('Sharp'))
-    expect(onUpdate).toHaveBeenCalledWith({ cardStyle: 'sharp' })
+    expect(screen.getByText('Card Style')).toBeTruthy()
+    expect(screen.getByText(/Backdrop Color/)).toBeTruthy()
+    expect(screen.getByText(/Border Radius/)).toBeTruthy()
+    expect(screen.getByText(/Blur/)).toBeTruthy()
   })
 
   it('calls onClose when close button clicked', () => {

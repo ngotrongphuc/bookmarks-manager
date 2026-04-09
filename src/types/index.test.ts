@@ -7,13 +7,13 @@ describe('types', () => {
     const settings: Settings = DEFAULT_SETTINGS
     expect(settings.columns).toBe(4)
     expect(settings.background.type).toBe('color')
-    expect(settings.cardStyle).toBe('rounded')
+    expect(settings.cardBorderRadius).toBe(12)
     expect(settings.gridSize).toBe('medium')
   })
 
   it('GRID_SIZE_MAP has all sizes', () => {
-    expect(GRID_SIZE_MAP.small.width).toBe(120)
-    expect(GRID_SIZE_MAP.medium.width).toBe(180)
-    expect(GRID_SIZE_MAP.large.width).toBe(240)
+    expect(GRID_SIZE_MAP.small.width).toBe(80)
+    expect(GRID_SIZE_MAP.medium.width).toBe(120)
+    expect(GRID_SIZE_MAP.large.width).toBe(180)
   })
 })

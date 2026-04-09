@@ -21,9 +21,10 @@ export type Settings = {
     type: 'color' | 'gradient' | 'image'
     value: string
   }
-  cardStyle: 'rounded' | 'sharp' | 'glass'
+  cardBackdropColor: string
+  cardBorderRadius: number
+  cardBlur: number
   fontFamily: string
-  cardOpacity: number
   gridSize: 'small' | 'medium' | 'large'
   columns: number
   gap: number
@@ -76,9 +77,10 @@ export type BackgroundMessage =
 
 export const DEFAULT_SETTINGS: Settings = {
   background: { type: 'color', value: '#0f172a' },
-  cardStyle: 'rounded',
+  cardBackdropColor: 'rgba(255,255,255,0.1)',
+  cardBorderRadius: 12,
+  cardBlur: 12,
   fontFamily: 'system-ui, -apple-system, sans-serif',
-  cardOpacity: 0.9,
   gridSize: 'medium',
   columns: 4,
   gap: 16,
