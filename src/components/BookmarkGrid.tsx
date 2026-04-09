@@ -17,6 +17,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { BookmarkCard } from './BookmarkCard'
 import { FolderCard } from './FolderCard'
 import { AddBookmarkCard } from './AddBookmarkCard'
+import { GRID_SIZE_MAP } from '@/types'
 import type { EnrichedBookmark, EnrichedFolder, Settings } from '@/types'
 
 type GridItem =
@@ -135,9 +136,11 @@ export function BookmarkGrid({
     >
       <SortableContext items={allIds} strategy={rectSortingStrategy}>
         <div
-          className="grid justify-center gap-4 p-4"
+          className="grid justify-center gap-4 overflow-hidden p-4"
           style={{
-            gridTemplateColumns: `repeat(${settings.columns}, max-content)`,
+            gridTemplateColumns: `repeat(auto-fill, ${GRID_SIZE_MAP[settings.gridSize].width}px)`,
+            maxWidth: `${settings.columns * (GRID_SIZE_MAP[settings.gridSize].width + 16)}px`,
+            margin: '0 auto',
           }}
         >
           {items.map((item) => (
