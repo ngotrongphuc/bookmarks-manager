@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.29.2",
     "@crxjs/vite-plugin": "2.0.0-beta.33",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.2.2",
