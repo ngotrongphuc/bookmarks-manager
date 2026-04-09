@@ -90,11 +90,30 @@ export function App() {
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null)
 
   // Reload the bookmarks bar tree from Chrome
-  async function reloadTree() {
+  const reloadTree = useCallback(async () => {
     const bar = await getBookmarksBar()
     if (bar) setBarNode(bar)
     return bar
-  }
+  }, [])
+
+  // Listen for external bookmark changes (Ctrl+D, bookmark bar, other extensions)
+  useEffect(() => {
+    function handleExternalChange() {
+      reloadTree()
+    }
+
+    chrome.bookmarks.onCreated.addListener(handleExternalChange)
+    chrome.bookmarks.onRemoved.addListener(handleExternalChange)
+    chrome.bookmarks.onChanged.addListener(handleExternalChange)
+    chrome.bookmarks.onMoved.addListener(handleExternalChange)
+
+    return () => {
+      chrome.bookmarks.onCreated.removeListener(handleExternalChange)
+      chrome.bookmarks.onRemoved.removeListener(handleExternalChange)
+      chrome.bookmarks.onChanged.removeListener(handleExternalChange)
+      chrome.bookmarks.onMoved.removeListener(handleExternalChange)
+    }
+  }, [reloadTree])
 
   // Initialize on mount
   useEffect(() => {
