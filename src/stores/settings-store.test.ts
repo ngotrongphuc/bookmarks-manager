@@ -11,24 +11,23 @@ describe('settings-store', () => {
 
   it('has default settings', () => {
     const state = useSettingsStore.getState()
-    expect(state.theme).toBe('dark')
     expect(state.columns).toBe(4)
-    expect(state.accentColor).toBe('#3b82f6')
+    expect(state.cardStyle).toBe('rounded')
+    expect(state.gridSize).toBe('medium')
   })
 
   it('updateSettings merges partial settings', () => {
-    useSettingsStore.getState().updateSettings({ theme: 'light', columns: 6 })
+    useSettingsStore.getState().updateSettings({ columns: 6 })
     const state = useSettingsStore.getState()
-    expect(state.theme).toBe('light')
     expect(state.columns).toBe(6)
     expect(state.cardStyle).toBe('rounded')
   })
 
   it('loadSettings reads from chrome storage', async () => {
     vi.mocked(chrome.storage.local.get).mockResolvedValue({
-      settings: { ...DEFAULT_SETTINGS, theme: 'light' },
+      settings: { ...DEFAULT_SETTINGS, columns: 6 },
     })
     await useSettingsStore.getState().loadSettings()
-    expect(useSettingsStore.getState().theme).toBe('light')
+    expect(useSettingsStore.getState().columns).toBe(6)
   })
 })

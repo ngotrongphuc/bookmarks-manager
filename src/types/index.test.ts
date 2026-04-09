@@ -5,7 +5,6 @@ import type { Settings } from './index'
 describe('types', () => {
   it('DEFAULT_SETTINGS has all required fields', () => {
     const settings: Settings = DEFAULT_SETTINGS
-    expect(settings.theme).toBe('dark')
     expect(settings.columns).toBe(4)
     expect(settings.background.type).toBe('color')
     expect(settings.cardStyle).toBe('rounded')

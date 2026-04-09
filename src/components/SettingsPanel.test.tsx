@@ -9,12 +9,6 @@ describe('SettingsPanel', () => {
     expect(screen.getByText('Settings')).toBeTruthy()
   })
 
-  it('renders theme toggle', () => {
-    render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={vi.fn()} onClose={vi.fn()} />)
-    expect(screen.getByText('Light')).toBeTruthy()
-    expect(screen.getByText('Dark')).toBeTruthy()
-  })
-
   it('renders card style options', () => {
     render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={vi.fn()} onClose={vi.fn()} />)
     expect(screen.getByText('Rounded')).toBeTruthy()
@@ -22,11 +16,11 @@ describe('SettingsPanel', () => {
     expect(screen.getByText('Glass')).toBeTruthy()
   })
 
-  it('calls onUpdate when theme changes', () => {
+  it('calls onUpdate when card style changes', () => {
     const onUpdate = vi.fn()
     render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={onUpdate} onClose={vi.fn()} />)
-    fireEvent.click(screen.getByText('Light'))
-    expect(onUpdate).toHaveBeenCalledWith({ theme: 'light' })
+    fireEvent.click(screen.getByText('Sharp'))
+    expect(onUpdate).toHaveBeenCalledWith({ cardStyle: 'sharp' })
   })
 
   it('calls onClose when close button clicked', () => {
@@ -34,5 +28,10 @@ describe('SettingsPanel', () => {
     render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={vi.fn()} onClose={onClose} />)
     fireEvent.click(screen.getByLabelText('Close settings'))
     expect(onClose).toHaveBeenCalled()
+  })
+
+  it('renders reset to defaults button', () => {
+    render(<SettingsPanel settings={DEFAULT_SETTINGS} onUpdate={vi.fn()} onClose={vi.fn()} />)
+    expect(screen.getByText('Reset to defaults')).toBeTruthy()
   })
 })

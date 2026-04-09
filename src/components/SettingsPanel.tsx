@@ -73,24 +73,6 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
           <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
         </Section>
 
-        <Section title="Theme">
-          <div className="flex gap-2">
-            {(['light', 'dark'] as const).map((theme) => (
-              <button key={theme} onClick={() => onUpdate({ theme })}
-                className={cn('flex-1 rounded-lg py-1.5 text-sm',
-                  settings.theme === theme ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white/60 hover:text-white')}>
-                {theme[0]!.toUpperCase() + theme.slice(1)}
-              </button>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Accent Color">
-          <input type="color" value={settings.accentColor}
-            onChange={(e) => onUpdate({ accentColor: e.target.value })}
-            className="h-8 w-full cursor-pointer rounded bg-slate-700" />
-        </Section>
-
         <Section title="Card Style">
           <div className="flex gap-2">
             {(['rounded', 'sharp', 'glass'] as const).map((style) => (

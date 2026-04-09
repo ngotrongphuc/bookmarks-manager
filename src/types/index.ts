@@ -21,8 +21,6 @@ export type Settings = {
     type: 'color' | 'gradient' | 'image'
     value: string
   }
-  theme: 'light' | 'dark'
-  accentColor: string
   cardStyle: 'rounded' | 'sharp' | 'glass'
   fontFamily: string
   cardOpacity: number
@@ -77,8 +75,6 @@ export type BackgroundMessage =
 
 export const DEFAULT_SETTINGS: Settings = {
   background: { type: 'color', value: '#0f172a' },
-  theme: 'dark',
-  accentColor: '#3b82f6',
   cardStyle: 'rounded',
   fontFamily: 'system-ui, -apple-system, sans-serif',
   cardOpacity: 0.9,
