@@ -14,6 +14,7 @@ import { useBookmarkStore } from '@/stores/bookmark-store'
 import { useCommandPalette } from '@/hooks/use-command-palette'
 import { useContextMenu } from '@/hooks/use-context-menu'
 import {
+  getBookmarksBar,
   getBookmarksBarChildren,
   createBookmark,
   createFolder as createChromeFolder,
@@ -40,6 +41,7 @@ export function App() {
   const [modal, setModal] = useState<ModalState>({ type: 'none' })
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [chromeNodes, setChromeNodes] = useState<chrome.bookmarks.BookmarkTreeNode[]>([])
+  const [bookmarksBarId, setBookmarksBarId] = useState<string | null>(null)
   const [showWelcome, setShowWelcome] = useState(false)
 
   // Initialize on mount
@@ -48,29 +50,35 @@ export function App() {
       await settings.loadSettings()
       await bookmarkStore.loadBookmarks()
 
-      const children = await getBookmarksBarChildren()
+      const bar = await getBookmarksBar()
+      const children = bar?.children ?? []
+      const barId = bar?.id ?? '1'
       setChromeNodes(children)
+      setBookmarksBarId(barId)
 
       // First-run: import bookmarks if store is empty
       const initialized = await storageGet<boolean>('initialized', false)
       if (!initialized) {
-        await importBookmarks(children)
+        // Register the Bookmarks Bar itself as a folder
+        bookmarkStore.addFolder({
+          chromeId: barId,
+          position: -1,
+          icon: '⭐',
+        })
+        await importBookmarks(children, barId)
         await storageSet('initialized', true)
         setShowWelcome(true)
       }
 
-      // Set active folder to first folder if not set
+      // Set active folder to Bookmarks Bar if not set
       if (!bookmarkStore.activeFolderId) {
-        const firstFolder = children.find(isFolder)
-        if (firstFolder) {
-          bookmarkStore.setActiveFolderId(firstFolder.id)
-        }
+        bookmarkStore.setActiveFolderId(barId)
       }
     }
     init()
   }, [])
 
-  async function importBookmarks(nodes: chrome.bookmarks.BookmarkTreeNode[]) {
+  async function importBookmarks(nodes: chrome.bookmarks.BookmarkTreeNode[], barId: string) {
     let folderPos = 0
     let bookmarkPos = 0
     for (const node of nodes) {
@@ -93,6 +101,7 @@ export function App() {
           }
         }
       } else if (node.url) {
+        // Top-level bookmarks in Bookmarks Bar (parentId is the bar itself)
         bookmarkStore.addBookmark({
           chromeId: node.id,
           position: bookmarkPos++,
@@ -104,21 +113,39 @@ export function App() {
 
   // Derive enriched data from Chrome nodes + custom metadata
   const enrichedFolders: EnrichedFolder[] = useMemo(() => {
-    return chromeNodes
-      .filter(isFolder)
-      .map((node) => {
+    const folders: EnrichedFolder[] = []
+
+    // Always include the Bookmarks Bar itself as the first folder tab
+    if (bookmarksBarId) {
+      const barCustom = bookmarkStore.folders[bookmarksBarId]
+      const looseBookmarkCount = chromeNodes.filter((n) => !isFolder(n)).length
+      folders.push({
+        chromeId: bookmarksBarId,
+        title: 'Bookmarks Bar',
+        position: barCustom?.position ?? -1,
+        icon: barCustom?.icon ?? '⭐',
+        color: barCustom?.color,
+        bookmarkCount: looseBookmarkCount,
+      })
+    }
+
+    // Add subfolders
+    for (const node of chromeNodes) {
+      if (isFolder(node)) {
         const custom = bookmarkStore.folders[node.id]
-        return {
+        folders.push({
           chromeId: node.id,
           title: node.title,
           position: custom?.position ?? 0,
           icon: custom?.icon,
           color: custom?.color,
           bookmarkCount: node.children?.filter((c) => !isFolder(c)).length ?? 0,
-        }
-      })
-      .sort((a, b) => a.position - b.position)
-  }, [chromeNodes, bookmarkStore.folders])
+        })
+      }
+    }
+
+    return folders.sort((a, b) => a.position - b.position)
+  }, [chromeNodes, bookmarkStore.folders, bookmarksBarId])
 
   const allEnrichedBookmarks: EnrichedBookmark[] = useMemo(() => {
     const result: EnrichedBookmark[] = []
@@ -161,8 +188,7 @@ export function App() {
   async function handleAddBookmark(data: { title: string; url: string; folderId: string; thumbnail: string | null }) {
     const created = await createBookmark(data.title, data.url, data.folderId)
     bookmarkStore.addBookmark({ chromeId: created.id, position: activeBookmarks.length, thumbnail: data.thumbnail })
-    const children = await getBookmarksBarChildren()
-    setChromeNodes(children)
+    setChromeNodes(await getBookmarksBarChildren())
     setModal({ type: 'none' })
   }
 
@@ -182,8 +208,7 @@ export function App() {
   }
 
   async function handleAddFolder(data: { name: string; icon: string; color: string }) {
-    const bookmarksBar = chromeNodes.length > 0 ? chromeNodes[0]?.parentId : '1'
-    const created = await createChromeFolder(data.name, bookmarksBar ?? '1')
+    const created = await createChromeFolder(data.name, bookmarksBarId ?? '1')
     bookmarkStore.addFolder({ chromeId: created.id, position: enrichedFolders.length, icon: data.icon, color: data.color })
     bookmarkStore.setActiveFolderId(created.id)
     const children = await getBookmarksBarChildren()

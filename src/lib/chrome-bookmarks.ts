@@ -3,14 +3,19 @@ export async function getBookmarkTree() {
   return chrome.bookmarks.getTree()
 }
 
-/** Get direct children of the Bookmarks Bar folder */
-export async function getBookmarksBarChildren() {
+/** Get the Bookmarks Bar folder node */
+export async function getBookmarksBar() {
   const tree = await chrome.bookmarks.getTree()
   const root = tree[0]
-  const bookmarksBar = root?.children?.find(
+  return root?.children?.find(
     (node) => node.title === 'Bookmarks Bar' || node.title === 'Bookmarks bar',
-  )
-  return bookmarksBar?.children ?? []
+  ) ?? null
+}
+
+/** Get direct children of the Bookmarks Bar folder */
+export async function getBookmarksBarChildren() {
+  const bar = await getBookmarksBar()
+  return bar?.children ?? []
 }
 
 /** Create a new bookmark in a folder */
