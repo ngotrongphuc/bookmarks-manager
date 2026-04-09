@@ -90,7 +90,10 @@ export function FolderCard({
                     `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
                   }
                   alt={item.title}
-                  className="h-full w-full rounded-md object-cover"
+                  className={cn(
+                    'rounded-md object-cover',
+                    item.thumbnail ? 'h-full w-full' : 'h-3/5 w-3/5',
+                  )}
                   loading="lazy"
                 />
               </div>
