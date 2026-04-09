@@ -79,7 +79,10 @@ export function FolderCard({
         style={{ width: size.width }}
       >
         {previews.length > 0 ? (
-          <div className="grid grid-cols-2 place-items-center gap-2">
+          <div
+            className="grid grid-cols-2 place-items-center gap-2"
+            style={{ gridTemplateRows: `${cellSize}px ${cellSize}px` }}
+          >
             {previews.map((item, i) => (
               <img
                 key={i}
