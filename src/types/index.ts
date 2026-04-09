@@ -86,7 +86,7 @@ export const DEFAULT_SETTINGS: Settings = {
 
 /** Grid size to pixel dimension mappings */
 export const GRID_SIZE_MAP = {
-  small: { width: 120, height: 90, fontSize: 12 },
-  medium: { width: 180, height: 135, fontSize: 14 },
-  large: { width: 240, height: 180, fontSize: 16 },
+  small: { width: 80, height: 60, fontSize: 11 },
+  medium: { width: 120, height: 90, fontSize: 12 },
+  large: { width: 180, height: 135, fontSize: 14 },
 } as const

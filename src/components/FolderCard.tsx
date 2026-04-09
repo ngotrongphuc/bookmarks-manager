@@ -23,7 +23,7 @@ type FolderCardProps = {
   className?: string
 }
 
-const FAVICON_SIZE = { small: 30, medium: 40, large: 50 } as const
+const FAVICON_SIZE = { small: 20, medium: 30, large: 40 } as const
 
 function getDomain(url: string): string {
   try {
