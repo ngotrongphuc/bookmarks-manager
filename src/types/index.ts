@@ -42,6 +42,13 @@ export type EnrichedBookmark = {
   parentId: string
 }
 
+/** Preview item for folder card thumbnails */
+export type FolderPreviewItem = {
+  title: string
+  url: string
+  thumbnail: string | null
+}
+
 /** A Chrome folder enriched with custom metadata */
 export type EnrichedFolder = {
   chromeId: string
@@ -50,6 +57,7 @@ export type EnrichedFolder = {
   icon?: string
   color?: string
   bookmarkCount: number
+  previewItems: FolderPreviewItem[]
 }
 
 /** Context menu action types */

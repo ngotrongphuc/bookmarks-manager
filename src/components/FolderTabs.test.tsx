@@ -5,8 +5,8 @@ import type { EnrichedFolder } from '@/types'
 
 describe('FolderTabs', () => {
   const folders: EnrichedFolder[] = [
-    { chromeId: '1', title: 'Social', position: 0, icon: '🌐', bookmarkCount: 5 },
-    { chromeId: '2', title: 'Work', position: 1, icon: '💼', bookmarkCount: 3 },
+    { chromeId: '1', title: 'Social', position: 0, icon: '🌐', bookmarkCount: 5, previewItems: [] },
+    { chromeId: '2', title: 'Work', position: 1, icon: '💼', bookmarkCount: 3, previewItems: [] },
   ]
   const defaultProps = {
     folders, activeFolderId: '1', accentColor: '#3b82f6',

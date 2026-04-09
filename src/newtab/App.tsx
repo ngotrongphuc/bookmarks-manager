@@ -183,6 +183,18 @@ export function App() {
       .filter(isFolder)
       .map((node) => {
         const custom = bookmarkStore.folders[node.id]
+        // Collect first 4 bookmark children for the preview grid
+        const previewItems = (node.children ?? [])
+          .filter((c) => c.url)
+          .slice(0, 4)
+          .map((c) => {
+            const bmCustom = bookmarkStore.bookmarks[c.id]
+            return {
+              title: c.title,
+              url: c.url!,
+              thumbnail: bmCustom?.thumbnail ?? null,
+            }
+          })
         return {
           chromeId: node.id,
           title: node.title,
@@ -190,10 +202,11 @@ export function App() {
           icon: custom?.icon,
           color: custom?.color,
           bookmarkCount: node.children?.length ?? 0,
+          previewItems,
         }
       })
       .sort((a, b) => a.position - b.position)
-  }, [currentChildren, bookmarkStore.folders])
+  }, [currentChildren, bookmarkStore.folders, bookmarkStore.bookmarks])
 
   const currentBookmarks: EnrichedBookmark[] = useMemo(() => {
     return currentChildren

@@ -60,6 +60,7 @@ function SortableItem({
           icon={item.data.icon}
           color={item.data.color}
           bookmarkCount={item.data.bookmarkCount}
+          previewItems={item.data.previewItems}
           cardStyle={settings.cardStyle}
           cardOpacity={settings.cardOpacity}
           gridSize={settings.gridSize}

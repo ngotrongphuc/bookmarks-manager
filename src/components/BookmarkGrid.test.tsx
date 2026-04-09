@@ -5,7 +5,7 @@ import type { EnrichedBookmark, EnrichedFolder, Settings } from '@/types'
 
 describe('BookmarkGrid', () => {
   const folders: EnrichedFolder[] = [
-    { chromeId: '20', title: 'Dev', position: 0, icon: '🔧', bookmarkCount: 3 },
+    { chromeId: '20', title: 'Dev', position: 0, icon: '🔧', bookmarkCount: 3, previewItems: [] },
   ]
   const bookmarks: EnrichedBookmark[] = [
     { chromeId: '1', title: 'GitHub', url: 'https://github.com', position: 0, thumbnail: null, parentId: '10' },

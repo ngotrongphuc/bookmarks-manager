@@ -2,11 +2,19 @@ import { cn } from '@/lib/cn'
 import { GRID_SIZE_MAP } from '@/types'
 import type { Settings } from '@/types'
 
+type PreviewItem = {
+  title: string
+  url: string
+  thumbnail: string | null
+}
+
 type FolderCardProps = {
   title: string
   icon?: string
   color?: string
   bookmarkCount: number
+  /** First 4 bookmarks/subfolders for the preview grid */
+  previewItems: PreviewItem[]
   cardStyle: Settings['cardStyle']
   cardOpacity: number
   gridSize: Settings['gridSize']
@@ -15,12 +23,21 @@ type FolderCardProps = {
   className?: string
 }
 
-/** Folder card displayed in the bookmark grid — click to enter */
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
+}
+
+/** Folder card with 2x2 preview grid of its contents */
 export function FolderCard({
   title,
   icon = '📁',
   color,
   bookmarkCount,
+  previewItems,
   cardStyle,
   cardOpacity,
   gridSize,
@@ -29,6 +46,7 @@ export function FolderCard({
   className,
 }: FolderCardProps) {
   const size = GRID_SIZE_MAP[gridSize]
+  const previews = previewItems.slice(0, 4)
 
   const cardClasses = cn(
     'group relative flex flex-col overflow-hidden transition-all duration-200',
@@ -45,6 +63,8 @@ export function FolderCard({
       cardStyle === 'glass' ? 'rgba(255,255,255,0.1)' : 'rgb(30,41,59)',
   }
 
+  const cellSize = Math.floor((Math.min(size.width, size.height) - 12) / 2)
+
   return (
     <div
       data-folder-card
@@ -54,18 +74,56 @@ export function FolderCard({
       onContextMenu={onContextMenu}
     >
       <div
-        className="flex flex-col items-center justify-center gap-1"
+        className="flex items-center justify-center p-1.5"
         style={{ width: size.width, height: size.height }}
       >
-        <span className="text-4xl">{icon}</span>
-        {color && (
-          <div
-            className="h-1 w-10 rounded-full"
-            style={{ backgroundColor: color }}
-          />
+        {previews.length > 0 ? (
+          <div className="grid grid-cols-2 gap-1">
+            {Array.from({ length: 4 }).map((_, i) => {
+              const item = previews[i]
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-center overflow-hidden rounded-md bg-black/20"
+                  style={{ width: cellSize, height: cellSize }}
+                >
+                  {item ? (
+                    <img
+                      src={
+                        item.thumbnail ??
+                        `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
+                      }
+                      alt={item.title}
+                      className={cn(
+                        'object-cover',
+                        item.thumbnail ? 'h-full w-full' : 'h-5 w-5',
+                      )}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-white/5" />
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <span className="text-4xl">{icon}</span>
         )}
       </div>
-      <div className="flex flex-col items-center px-2 py-1.5" style={{ width: size.width }}>
+
+      {/* Color accent bar */}
+      {color && (
+        <div
+          className="mx-auto h-0.5 w-8 rounded-full"
+          style={{ backgroundColor: color }}
+        />
+      )}
+
+      <div
+        className="flex flex-col items-center px-2 py-1.5"
+        style={{ width: size.width }}
+      >
         <span
           className="w-full truncate text-center font-medium text-white"
           style={{ fontSize: size.fontSize }}
