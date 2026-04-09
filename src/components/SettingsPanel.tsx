@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { cn } from '@/lib/cn'
 import type { Settings } from '@/types'
+import { DEFAULT_SETTINGS } from '@/types'
 
 const FONT_OPTIONS = ['Inter', 'System UI', 'Roboto', 'Open Sans', 'Lato', 'Poppins', 'Montserrat', 'Raleway', 'Nunito']
 
@@ -128,6 +129,14 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
             </div>
           </div>
         </Section>
+
+        {/* Reset */}
+        <button
+          onClick={() => onUpdate(DEFAULT_SETTINGS)}
+          className="w-full rounded-lg border border-red-500/30 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10"
+        >
+          Reset to defaults
+        </button>
       </div>
     </div>
   )

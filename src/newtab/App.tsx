@@ -282,13 +282,6 @@ export function App() {
     })
   }, [barNode, currentFolderId, bookmarkStore.folders])
 
-  // Grid size cycling
-  const cycleGridSize = useCallback(() => {
-    const order: Settings['gridSize'][] = ['small', 'medium', 'large']
-    const current = order.indexOf(settings.gridSize)
-    const next = order[(current + 1) % order.length]!
-    settings.updateSettings({ gridSize: next })
-  }, [settings.gridSize])
 
   // Navigation
   function openFolder(folderId: string) {
@@ -427,9 +420,7 @@ export function App() {
 
       <div className="relative z-10">
         <TopBar
-          gridSize={settings.gridSize}
           onOpenSearch={commandPalette.open}
-          onCycleGridSize={cycleGridSize}
           onOpenSettings={() => setSettingsOpen(true)}
         />
 
