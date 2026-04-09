@@ -118,6 +118,16 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
           <input type="range" min={3} max={8} step={1} value={settings.columns}
             onChange={(e) => onUpdate({ columns: Number(e.target.value) })} className="w-full" />
         </Section>
+
+        {/* Keyboard Shortcuts */}
+        <Section title="Keyboard Shortcuts">
+          <div className="space-y-2 text-sm text-white/50">
+            <div className="flex items-center justify-between">
+              <span>Search bookmarks</span>
+              <kbd className="rounded bg-slate-700 px-2 py-0.5 text-xs text-white/60">Ctrl+K</kbd>
+            </div>
+          </div>
+        </Section>
       </div>
     </div>
   )
