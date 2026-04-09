@@ -114,6 +114,11 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
             onChange={(e) => onUpdate({ columns: Number(e.target.value) })} className="w-full" />
         </Section>
 
+        <Section title={`Gap — ${settings.gap}px`}>
+          <input type="range" min={0} max={48} step={4} value={settings.gap}
+            onChange={(e) => onUpdate({ gap: Number(e.target.value) })} className="w-full" />
+        </Section>
+
         {/* Keyboard Shortcuts */}
         <Section title="Keyboard Shortcuts">
           <div className="space-y-2 text-sm text-white/50">

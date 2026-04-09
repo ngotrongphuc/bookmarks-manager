@@ -26,6 +26,7 @@ export type Settings = {
   cardOpacity: number
   gridSize: 'small' | 'medium' | 'large'
   columns: number
+  gap: number
 }
 
 /** A Chrome bookmark node enriched with custom metadata */
@@ -80,6 +81,7 @@ export const DEFAULT_SETTINGS: Settings = {
   cardOpacity: 0.9,
   gridSize: 'medium',
   columns: 4,
+  gap: 16,
 }
 
 /** Grid size to pixel dimension mappings */

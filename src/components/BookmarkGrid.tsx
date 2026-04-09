@@ -26,7 +26,7 @@ type GridItem =
 type BookmarkGridProps = {
   folders: EnrichedFolder[]
   bookmarks: EnrichedBookmark[]
-  settings: Pick<Settings, 'cardStyle' | 'cardOpacity' | 'gridSize' | 'columns'>
+  settings: Pick<Settings, 'cardStyle' | 'cardOpacity' | 'gridSize' | 'columns' | 'gap'>
   onReorder: (orderedIds: string[]) => void
   onAddBookmark: () => void
   onOpenFolder: (folderId: string) => void
@@ -135,9 +135,10 @@ export function BookmarkGrid({
     >
       <SortableContext items={allIds} strategy={rectSortingStrategy}>
         <div
-          className="grid justify-center gap-4 p-4"
+          className="grid justify-center p-4"
           style={{
             gridTemplateColumns: `repeat(${settings.columns}, max-content)`,
+            gap: `${settings.gap}px`,
           }}
         >
           {items.map((item) => (
