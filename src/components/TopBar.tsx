@@ -12,7 +12,7 @@ type TopBarProps = {
 /** Top bar with search, grid toggle, and settings gear */
 export function TopBar({ gridSize, onOpenSearch, onCycleGridSize, onOpenSettings }: TopBarProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-3">
+    <div className="sticky top-0 z-30 flex items-center justify-between bg-black/30 px-4 py-3 backdrop-blur-md">
       <button aria-label="Search" onClick={onOpenSearch}
         className="rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white">
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
