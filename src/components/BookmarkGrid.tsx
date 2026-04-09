@@ -135,9 +135,9 @@ export function BookmarkGrid({
     >
       <SortableContext items={allIds} strategy={rectSortingStrategy}>
         <div
-          className="grid gap-4 p-4"
+          className="grid justify-center gap-4 p-4"
           style={{
-            gridTemplateColumns: `repeat(${settings.columns}, 1fr)`,
+            gridTemplateColumns: `repeat(${settings.columns}, max-content)`,
           }}
         >
           {items.map((item) => (
