@@ -23,6 +23,8 @@ type FolderCardProps = {
   className?: string
 }
 
+const FAVICON_SIZE = { small: 30, medium: 40, large: 50 } as const
+
 function getDomain(url: string): string {
   try {
     return new URL(url).hostname
@@ -92,8 +94,9 @@ export function FolderCard({
                   alt={item.title}
                   className={cn(
                     'rounded-md object-cover',
-                    item.thumbnail ? 'h-full w-full' : 'h-3/5 w-3/5',
+                    item.thumbnail ? 'h-full w-full' : '',
                   )}
+                  style={item.thumbnail ? undefined : { width: FAVICON_SIZE[gridSize], height: FAVICON_SIZE[gridSize] }}
                   loading="lazy"
                 />
               </div>
