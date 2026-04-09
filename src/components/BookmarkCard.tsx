@@ -14,55 +14,71 @@ type BookmarkCardProps = {
   className?: string
 }
 
-/** Individual bookmark tile with thumbnail and title */
+/** Individual bookmark tile — just thumbnail/favicon + title, no wrapper */
 export function BookmarkCard({
-  title, url, thumbnail, cardStyle, cardOpacity, gridSize,
-  accentColor, onContextMenu, className,
+  title,
+  url,
+  thumbnail,
+  cardStyle,
+  gridSize,
+  onContextMenu,
+  className,
 }: BookmarkCardProps) {
   const size = GRID_SIZE_MAP[gridSize]
   const domain = getDomain(url)
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`
   const imgSrc = thumbnail ?? faviconUrl
 
-  const cardClasses = cn(
-    'group relative flex flex-col overflow-hidden transition-all duration-200',
-    'hover:-translate-y-1 hover:shadow-lg cursor-pointer',
-    cardStyle === 'rounded' && 'rounded-xl',
-    cardStyle === 'sharp' && 'rounded-none',
-    cardStyle === 'glass' && 'rounded-xl backdrop-blur-md border border-white/20',
-    className,
-  )
-
-  const bgStyle: React.CSSProperties = {
-    opacity: cardOpacity,
-    backgroundColor: accentColor ?? (cardStyle === 'glass' ? 'rgba(255,255,255,0.1)' : 'rgb(30,41,59)'),
-  }
-
   return (
-    <div data-bookmark-card className={cardClasses} style={bgStyle} onContextMenu={onContextMenu}>
-      <a href={url} className="flex flex-col" rel="noopener noreferrer">
+    <div
+      data-bookmark-card
+      className={cn(
+        'flex flex-col items-center transition-all duration-200',
+        'hover:-translate-y-1 cursor-pointer',
+        className,
+      )}
+      onContextMenu={onContextMenu}
+    >
+      <a
+        href={url}
+        className="flex flex-col items-center"
+        rel="noopener noreferrer"
+      >
         <div
-          className="flex items-center justify-center overflow-hidden bg-black/20"
+          className={cn(
+            'flex items-center justify-center overflow-hidden',
+            thumbnail ? 'shadow-md' : '',
+            cardStyle === 'rounded' && 'rounded-xl',
+            cardStyle === 'sharp' && 'rounded-none',
+            cardStyle === 'glass' && 'rounded-xl',
+          )}
           style={{ width: size.width, height: size.height }}
         >
           <img
             src={imgSrc}
             alt={title}
-            className={cn('object-cover', thumbnail ? 'h-full w-full' : 'h-8 w-8')}
+            className={cn(
+              'object-cover',
+              thumbnail ? 'h-full w-full' : 'h-10 w-10',
+            )}
             loading="lazy"
           />
         </div>
-        <div
-          className="truncate px-2 py-1.5 text-center text-white"
+        <span
+          className="mt-1.5 w-full truncate text-center text-white/90"
           style={{ fontSize: size.fontSize, width: size.width }}
         >
           {title}
-        </div>
+        </span>
       </a>
     </div>
   )
 }
 
 function getDomain(url: string): string {
-  try { return new URL(url).hostname } catch { return url }
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
 }
