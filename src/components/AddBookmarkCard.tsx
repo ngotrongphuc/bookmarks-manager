@@ -23,7 +23,7 @@ export function AddBookmarkCard({ gridSize, onClick, className }: AddBookmarkCar
         'hover:border-white/60 hover:text-white/80',
         className,
       )}
-      style={{ width: size.width, height: totalHeight }}
+      style={{ aspectRatio: `${size.width} / ${size.height + 32}` }}
     >
       <span className="text-3xl font-light">+</span>
       <span className="mt-1 text-xs">Add bookmark</span>
