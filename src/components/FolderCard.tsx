@@ -76,7 +76,7 @@ export function FolderCard({
     >
       <div
         className="flex items-start justify-center p-1.5 pt-2"
-        style={{ width: size.width, height: size.height }}
+        style={{ width: size.width }}
       >
         {previews.length > 0 ? (
           <div className="grid grid-cols-2 place-items-center gap-2">
