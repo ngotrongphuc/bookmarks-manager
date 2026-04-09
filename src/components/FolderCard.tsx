@@ -119,9 +119,9 @@ export function FolderCard({
       >
         <span
           className="w-full truncate text-center font-medium text-white"
-          style={{ fontSize: size.fontSize }}
+          style={{ fontSize: size.fontSize, lineHeight: '1.4em', minHeight: '1.4em' }}
         >
-          {title}
+          {title || '\u00A0'}
         </span>
         <span className="text-[10px] text-white/40">
           {bookmarkCount} {bookmarkCount === 1 ? 'item' : 'items'}

@@ -66,9 +66,9 @@ export function BookmarkCard({
         </div>
         <span
           className="mt-1.5 w-full truncate text-center text-white/90"
-          style={{ fontSize: size.fontSize, width: size.width }}
+          style={{ fontSize: size.fontSize, width: size.width, lineHeight: '1.4em', minHeight: '1.4em' }}
         >
-          {title}
+          {title || '\u00A0'}
         </span>
       </a>
     </div>
