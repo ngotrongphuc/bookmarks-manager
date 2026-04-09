@@ -18,7 +18,7 @@ export type Folder = {
 /** App settings, stored in chrome.storage.local */
 export type Settings = {
   background: {
-    type: 'color' | 'gradient' | 'image'
+    type: 'color' | 'image'
     value: string
   }
   cardBackdropColor: string
@@ -84,7 +84,7 @@ export const DEFAULT_SETTINGS: Settings = {
   cardOpacity: 1,
   fontFamily: 'system-ui, -apple-system, sans-serif',
   gridSize: 'medium',
-  columns: 4,
+  columns: 6,
   gap: 16,
 }
 

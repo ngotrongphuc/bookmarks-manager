@@ -76,10 +76,9 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
       <div className="space-y-6">
         <Section title="Background">
           <div className="flex gap-2">
-            {(['color', 'gradient', 'image'] as const).map((type) => (
+            {(['color', 'image'] as const).map((type) => (
               <button key={type} onClick={() => {
                 if (type === 'color') onUpdate({ background: { type, value: '#0f172a' } })
-                if (type === 'gradient') onUpdate({ background: { type, value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' } })
                 if (type === 'image') fileInputRef.current?.click()
               }} className={cn('rounded-lg px-3 py-1.5 text-xs capitalize',
                 settings.background.type === type ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white/60 hover:text-white')}>

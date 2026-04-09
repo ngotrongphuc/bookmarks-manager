@@ -11,7 +11,7 @@ describe('settings-store', () => {
 
   it('has default settings', () => {
     const state = useSettingsStore.getState()
-    expect(state.columns).toBe(4)
+    expect(state.columns).toBe(6)
     expect(state.cardBorderRadius).toBe(12)
     expect(state.gridSize).toBe('medium')
   })

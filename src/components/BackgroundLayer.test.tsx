@@ -11,14 +11,6 @@ describe('BackgroundLayer', () => {
     expect(layer.style.backgroundColor).toBe('rgb(15, 23, 42)')
   })
 
-  it('renders gradient background', () => {
-    const { container } = render(
-      <BackgroundLayer background={{ type: 'gradient', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }} />,
-    )
-    const layer = container.firstElementChild as HTMLElement
-    expect(layer.style.backgroundImage).toContain('linear-gradient')
-  })
-
   it('renders image background', () => {
     const { container } = render(
       <BackgroundLayer background={{ type: 'image', value: 'https://example.com/bg.jpg' }} />,

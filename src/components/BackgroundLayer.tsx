@@ -6,7 +6,7 @@ type BackgroundLayerProps = {
   className?: string
 }
 
-/** Full-page background renderer supporting color, gradient, and image */
+/** Full-page background renderer supporting color and image */
 export function BackgroundLayer({ background, className }: BackgroundLayerProps) {
   const baseClasses = 'fixed inset-0 -z-10'
 
@@ -19,10 +19,5 @@ export function BackgroundLayer({ background, className }: BackgroundLayerProps)
     )
   }
 
-  const style: React.CSSProperties =
-    background.type === 'gradient'
-      ? { backgroundImage: background.value }
-      : { backgroundColor: background.value }
-
-  return <div className={cn(baseClasses, className)} style={style} />
+  return <div className={cn(baseClasses, className)} style={{ backgroundColor: background.value }} />
 }
