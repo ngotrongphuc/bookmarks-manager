@@ -79,9 +79,7 @@ function SortableItem({
         url={bm.url}
         thumbnail={bm.thumbnail}
         cardStyle={settings.cardStyle}
-        cardOpacity={settings.cardOpacity}
         gridSize={settings.gridSize}
-        accentColor={bm.accentColor}
         onContextMenu={onBookmarkContextMenu}
       />
     </div>

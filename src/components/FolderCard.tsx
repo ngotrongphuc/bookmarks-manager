@@ -58,9 +58,10 @@ export function FolderCard({
   )
 
   const bgStyle: React.CSSProperties = {
-    opacity: cardOpacity,
     backgroundColor:
-      cardStyle === 'glass' ? 'rgba(255,255,255,0.1)' : 'rgb(30,41,59)',
+      cardStyle === 'glass'
+        ? `rgba(255,255,255,${0.1 * cardOpacity})`
+        : `rgba(30,41,59,${cardOpacity})`,
   }
 
   const cellSize = Math.floor((Math.min(size.width, size.height) - 12) / 2)

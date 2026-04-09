@@ -7,9 +7,7 @@ type BookmarkCardProps = {
   url: string
   thumbnail: string | null
   cardStyle: Settings['cardStyle']
-  cardOpacity: number
   gridSize: Settings['gridSize']
-  accentColor?: string
   onContextMenu: (e: React.MouseEvent) => void
   className?: string
 }
