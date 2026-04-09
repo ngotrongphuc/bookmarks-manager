@@ -117,6 +117,11 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
                 className="w-full" />
             </div>
             <div>
+              <label className="mb-1 block text-xs text-white/50">Card Opacity — {Math.round(settings.cardOpacity * 100)}%</label>
+              <input type="range" min={0} max={1} step={0.05} value={settings.cardOpacity}
+                onChange={(e) => onUpdate({ cardOpacity: Number(e.target.value) })} className="w-full" />
+            </div>
+            <div>
               <label className="mb-1 block text-xs text-white/50">Border Radius — {settings.cardBorderRadius}px</label>
               <input type="range" min={0} max={24} step={2} value={settings.cardBorderRadius}
                 onChange={(e) => onUpdate({ cardBorderRadius: Number(e.target.value) })} className="w-full" />
@@ -125,11 +130,6 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
               <label className="mb-1 block text-xs text-white/50">Blur — {settings.cardBlur}px</label>
               <input type="range" min={0} max={24} step={2} value={settings.cardBlur}
                 onChange={(e) => onUpdate({ cardBlur: Number(e.target.value) })} className="w-full" />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs text-white/50">Card Opacity — {Math.round(settings.cardOpacity * 100)}%</label>
-              <input type="range" min={0} max={1} step={0.05} value={settings.cardOpacity}
-                onChange={(e) => onUpdate({ cardOpacity: Number(e.target.value) })} className="w-full" />
             </div>
           </div>
         </Section>

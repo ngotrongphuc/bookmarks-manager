@@ -53,28 +53,31 @@ export function FolderCard({
   const size = GRID_SIZE_MAP[gridSize]
   const previews = previewItems.slice(0, 4)
 
-  const cardStyle: React.CSSProperties = {
-    backgroundColor: cardBackdropColor,
-    borderRadius: `${cardBorderRadius}px`,
-    backdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
-    WebkitBackdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
-    opacity: cardOpacity,
-  }
-
   return (
     <div
       data-folder-card
       className={cn(
-        'group relative flex flex-col overflow-hidden border border-white/10 transition-all duration-200',
+        'group relative flex flex-col overflow-hidden transition-all duration-200',
         'hover:-translate-y-1 hover:shadow-lg cursor-pointer',
         className,
       )}
-      style={cardStyle}
+      style={{ borderRadius: `${cardBorderRadius}px` }}
       onClick={onClick}
       onContextMenu={onContextMenu}
     >
+      {/* Card wrapper background — affected by cardOpacity */}
       <div
-        className="flex items-start justify-center p-1.5 px-2"
+        className="pointer-events-none absolute inset-0 border border-white/10"
+        style={{
+          backgroundColor: cardBackdropColor,
+          borderRadius: `${cardBorderRadius}px`,
+          backdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
+          WebkitBackdropFilter: cardBlur > 0 ? `blur(${cardBlur}px)` : undefined,
+          opacity: cardOpacity,
+        }}
+      />
+      <div
+        className="relative z-10 flex items-start justify-center p-1.5 px-2"
         style={{ width: size.width }}
       >
         {previews.length > 0 ? (
@@ -108,13 +111,13 @@ export function FolderCard({
 
       {color && (
         <div
-          className="mx-auto h-0.5 w-8 rounded-full"
+          className="relative z-10 mx-auto h-0.5 w-8 rounded-full"
           style={{ backgroundColor: color }}
         />
       )}
 
       <div
-        className="flex flex-col items-center px-2 py-1.5"
+        className="relative z-10 flex flex-col items-center px-2 py-1.5"
         style={{ width: size.width }}
       >
         <span
