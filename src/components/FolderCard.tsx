@@ -78,34 +78,27 @@ export function FolderCard({
         style={{ width: size.width, height: size.height }}
       >
         {previews.length > 0 ? (
-          <div className="grid grid-cols-2 gap-1">
-            {Array.from({ length: 4 }).map((_, i) => {
-              const item = previews[i]
-              return (
-                <div
-                  key={i}
-                  className="flex items-center justify-center overflow-hidden rounded-md bg-black/20"
-                  style={{ width: cellSize, height: cellSize }}
-                >
-                  {item ? (
-                    <img
-                      src={
-                        item.thumbnail ??
-                        `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
-                      }
-                      alt={item.title}
-                      className={cn(
-                        'object-cover',
-                        item.thumbnail ? 'h-full w-full' : 'h-5 w-5',
-                      )}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="h-full w-full bg-white/5" />
-                  )}
-                </div>
-              )
-            })}
+          <div className="grid grid-cols-2 place-items-center gap-2">
+            {previews.map((item, i) => (
+              <img
+                key={i}
+                src={
+                  item.thumbnail ??
+                  `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
+                }
+                alt={item.title}
+                className={cn(
+                  'object-cover',
+                  item.thumbnail ? 'rounded-md' : '',
+                )}
+                style={
+                  item.thumbnail
+                    ? { width: cellSize, height: cellSize }
+                    : { width: 24, height: 24 }
+                }
+                loading="lazy"
+              />
+            ))}
           </div>
         ) : (
           <span className="text-4xl">{icon}</span>
