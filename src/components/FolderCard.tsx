@@ -75,7 +75,7 @@ export function FolderCard({
       onContextMenu={onContextMenu}
     >
       <div
-        className="flex items-center justify-center p-1.5"
+        className="flex items-start justify-center p-1.5 pt-2"
         style={{ width: size.width, height: size.height }}
       >
         {previews.length > 0 ? (
