@@ -64,8 +64,6 @@ export function FolderCard({
         : `rgba(30,41,59,${cardOpacity})`,
   }
 
-  const cellSize = Math.floor((Math.min(size.width, size.height) - 12) / 2)
-
   return (
     <div
       data-folder-card
@@ -74,38 +72,37 @@ export function FolderCard({
       onClick={onClick}
       onContextMenu={onContextMenu}
     >
-      <div
-        className="flex items-start justify-center p-1.5 pt-2"
-        style={{ width: size.width }}
-      >
+      <div className="flex items-start justify-center p-2">
         {previews.length > 0 ? (
-          <div
-            className="grid grid-cols-2 place-items-center gap-2"
-            style={{ gridTemplateRows: `${cellSize}px ${cellSize}px` }}
-          >
+          <div className="grid w-full grid-cols-2 grid-rows-2 gap-1.5">
             {previews.map((item, i) => (
-              <img
+              <div
                 key={i}
-                src={
-                  item.thumbnail ??
-                  `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
-                }
-                alt={item.title}
-                className={cn(
-                  'object-cover',
-                  item.thumbnail ? 'rounded-md' : '',
-                )}
-                style={
-                  item.thumbnail
-                    ? { width: cellSize, height: cellSize }
-                    : { width: 24, height: 24 }
-                }
-                loading="lazy"
-              />
+                className="flex items-center justify-center"
+                style={{ aspectRatio: '1' }}
+              >
+                <img
+                  src={
+                    item.thumbnail ??
+                    `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&sz=64`
+                  }
+                  alt={item.title}
+                  className={cn(
+                    'object-cover',
+                    item.thumbnail ? 'h-full w-full rounded-md' : 'h-6 w-6',
+                  )}
+                  loading="lazy"
+                />
+              </div>
             ))}
           </div>
         ) : (
-          <span className="text-4xl">{icon}</span>
+          <div
+            className="flex items-center justify-center"
+            style={{ aspectRatio: `${size.width} / ${size.height}` }}
+          >
+            <span className="text-4xl">{icon}</span>
+          </div>
         )}
       </div>
 
@@ -117,10 +114,7 @@ export function FolderCard({
         />
       )}
 
-      <div
-        className="flex flex-col items-center px-2 py-1.5"
-        style={{ width: size.width }}
-      >
+      <div className="flex flex-col items-center px-2 py-1.5">
         <span
           className="w-full truncate text-center font-medium text-white"
           style={{ fontSize: size.fontSize, lineHeight: '1.4em', minHeight: '1.4em' }}
