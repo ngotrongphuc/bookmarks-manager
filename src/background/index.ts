@@ -36,7 +36,7 @@ async function captureThumbnail(url: string): Promise<string | null> {
         reject(new Error('Timeout'))
       }, 15000)
 
-      function listener(tabId: number, info: chrome.tabs.TabChangeInfo) {
+      function listener(tabId: number, info: { status?: string }) {
         if (tabId === tab!.id && info.status === 'complete') {
           chrome.tabs.onUpdated.removeListener(listener)
           clearTimeout(timeout)
