@@ -39,18 +39,18 @@ export function BookmarkCard({
     >
       <a
         href={url}
-        className="flex w-full flex-col items-center"
+        className="flex flex-col items-center"
         rel="noopener noreferrer"
       >
         <div
           className={cn(
-            'flex w-full items-center justify-center overflow-hidden',
+            'flex items-center justify-center overflow-hidden',
             thumbnail ? 'shadow-md' : '',
             cardStyle === 'rounded' && 'rounded-xl',
             cardStyle === 'sharp' && 'rounded-none',
             cardStyle === 'glass' && 'rounded-xl',
           )}
-          style={{ aspectRatio: `${size.width} / ${size.height}` }}
+          style={{ width: size.width, height: size.height }}
         >
           <img
             src={imgSrc}
@@ -64,7 +64,7 @@ export function BookmarkCard({
         </div>
         <span
           className="mt-1.5 w-full truncate text-center text-white/90"
-          style={{ fontSize: size.fontSize, lineHeight: '1.4em', minHeight: '1.4em' }}
+          style={{ fontSize: size.fontSize, width: size.width, lineHeight: '1.4em', minHeight: '1.4em' }}
         >
           {title || '\u00A0'}
         </span>
