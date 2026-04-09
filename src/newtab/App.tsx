@@ -56,24 +56,25 @@ export function App() {
       setChromeNodes(children)
       setBookmarksBarId(barId)
 
-      // First-run: import bookmarks if store is empty
-      const initialized = await storageGet<boolean>('initialized', false)
-      if (!initialized) {
-        // Register the Bookmarks Bar itself as a folder
+      // Register the Bookmarks Bar folder if not already registered
+      if (!bookmarkStore.folders[barId]) {
         bookmarkStore.addFolder({
           chromeId: barId,
           position: -1,
           icon: '⭐',
         })
+      }
+
+      // First-run: import bookmark/folder metadata
+      const initialized = await storageGet<boolean>('initialized', false)
+      if (!initialized) {
         await importBookmarks(children, barId)
         await storageSet('initialized', true)
         setShowWelcome(true)
       }
 
-      // Set active folder to Bookmarks Bar if not set
-      if (!bookmarkStore.activeFolderId) {
-        bookmarkStore.setActiveFolderId(barId)
-      }
+      // Always default to Bookmarks Bar
+      bookmarkStore.setActiveFolderId(barId)
     }
     init()
   }, [])

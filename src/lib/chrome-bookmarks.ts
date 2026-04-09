@@ -3,13 +3,12 @@ export async function getBookmarkTree() {
   return chrome.bookmarks.getTree()
 }
 
-/** Get the Bookmarks Bar folder node */
+/** Get the Bookmarks Bar folder node (always first child of root) */
 export async function getBookmarksBar() {
   const tree = await chrome.bookmarks.getTree()
   const root = tree[0]
-  return root?.children?.find(
-    (node) => node.title === 'Bookmarks Bar' || node.title === 'Bookmarks bar',
-  ) ?? null
+  // Bookmarks Bar is always the first child of the root node in Chrome
+  return root?.children?.[0] ?? null
 }
 
 /** Get direct children of the Bookmarks Bar folder */
