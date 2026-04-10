@@ -63,6 +63,8 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
   }
 
   return (
+    <>
+    <div className="fixed inset-0 z-30" onClick={onClose} />
     <div className="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-neutral-200 bg-white p-5 shadow-2xl dark:border-white/10 dark:bg-[#292a2d]">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">Settings</h2>
@@ -181,6 +183,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
         </button>
       </div>
     </div>
+    </>
   )
 }
 
