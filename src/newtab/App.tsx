@@ -420,10 +420,45 @@ export function App() {
     contextMenu.show(e, items)
   }
 
+  function showBackgroundContextMenu(e: React.MouseEvent) {
+    // Only show if right-clicking on the page background, not on a card
+    const target = e.target as HTMLElement
+    if (target.closest('[data-bookmark-card]') || target.closest('[data-folder-card]')) return
+
+    const items: ContextMenuItem[] = [
+      {
+        label: 'Add bookmark',
+        icon: '🔗',
+        action: () => setModal({ type: 'add-bookmark' }),
+      },
+      {
+        label: 'Add folder',
+        icon: '📁',
+        action: () => setModal({ type: 'add-folder' }),
+      },
+      {
+        label: 'Search',
+        icon: '🔍',
+        action: () => commandPalette.open(),
+      },
+      {
+        label: 'Settings',
+        icon: '⚙️',
+        action: () => setSettingsOpen(true),
+      },
+      {
+        label: 'Refresh',
+        icon: '🔄',
+        action: () => reloadTree(),
+      },
+    ]
+    contextMenu.show(e, items)
+  }
+
   const fontStyle = { fontFamily: settings.fontFamily }
 
   return (
-    <div className="min-h-screen" style={fontStyle}>
+    <div className="min-h-screen" style={fontStyle} onContextMenu={showBackgroundContextMenu}>
       <BackgroundLayer background={settings.background} />
 
       <div className="relative z-10">
