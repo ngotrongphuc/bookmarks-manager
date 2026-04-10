@@ -77,7 +77,7 @@ export type BackgroundMessage =
   | { type: 'thumbnail-result'; data: string | null }
 
 export const DEFAULT_SETTINGS: Settings = {
-  background: { type: 'color', value: '#0f172a' },
+  background: { type: 'color', value: '#323639' },
   cardBackdropColor: 'rgba(255,255,255,0.1)',
   cardBorderRadius: 12,
   cardBlur: 12,

@@ -140,7 +140,7 @@ export function App() {
         settings.updateSettings({
           background: {
             type: 'color',
-            value: isDark ? '#0f172a' : '#f1f5f9',
+            value: isDark ? '#323639' : '#f1f5f9',
           },
         })
         await storageSet('initialized', true)

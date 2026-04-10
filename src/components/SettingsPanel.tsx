@@ -63,7 +63,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-neutral-200 bg-white p-5 shadow-2xl dark:border-white/10 dark:bg-slate-900">
+    <div className="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-neutral-200 bg-white p-5 shadow-2xl dark:border-white/10 dark:bg-[#292a2d]">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">Settings</h2>
         <button aria-label="Close settings" onClick={onClose}
@@ -78,7 +78,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
           <div className="flex gap-2">
             {(['color', 'image'] as const).map((type) => (
               <button key={type} onClick={() => {
-                if (type === 'color') onUpdate({ background: { type, value: '#0f172a' } })
+                if (type === 'color') onUpdate({ background: { type, value: '#323639' } })
                 if (type === 'image') fileInputRef.current?.click()
               }} className={cn('rounded-lg px-3 py-1.5 text-xs capitalize',
                 settings.background.type === type ? 'bg-blue-600 text-white' : 'bg-neutral-200 text-neutral-600 hover:text-neutral-900 dark:bg-slate-700 dark:text-white/60 dark:hover:text-white')}>
