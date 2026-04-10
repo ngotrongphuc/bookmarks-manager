@@ -436,21 +436,6 @@ export function App() {
         icon: '📁',
         action: () => setModal({ type: 'add-folder' }),
       },
-      {
-        label: 'Search',
-        icon: '🔍',
-        action: () => commandPalette.open(),
-      },
-      {
-        label: 'Settings',
-        icon: '⚙️',
-        action: () => setSettingsOpen(true),
-      },
-      {
-        label: 'Refresh',
-        icon: '🔄',
-        action: () => reloadTree(),
-      },
     ]
     contextMenu.show(e, items)
   }
