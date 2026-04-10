@@ -63,11 +63,11 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-white/10 bg-slate-900 p-5 shadow-2xl">
+    <div className="fixed inset-y-0 right-0 z-40 w-[300px] overflow-y-auto border-l border-neutral-200 bg-white p-5 shadow-2xl dark:border-white/10 dark:bg-slate-900">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Settings</h2>
+        <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">Settings</h2>
         <button aria-label="Close settings" onClick={onClose}
-          className="rounded-lg p-1 text-white/40 hover:text-white">
+          className="rounded-lg p-1 text-neutral-400 hover:text-neutral-900 dark:text-white/40 dark:hover:text-white">
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -81,7 +81,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
                 if (type === 'color') onUpdate({ background: { type, value: '#0f172a' } })
                 if (type === 'image') fileInputRef.current?.click()
               }} className={cn('rounded-lg px-3 py-1.5 text-xs capitalize',
-                settings.background.type === type ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white/60 hover:text-white')}>
+                settings.background.type === type ? 'bg-blue-600 text-white' : 'bg-neutral-200 text-neutral-600 hover:text-neutral-900 dark:bg-slate-700 dark:text-white/60 dark:hover:text-white')}>
                 {type}
               </button>
             ))}
@@ -89,7 +89,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
           {settings.background.type === 'color' && (
             <input type="color" value={settings.background.value}
               onChange={(e) => onUpdate({ background: { type: 'color', value: e.target.value } })}
-              className="mt-2 h-8 w-full cursor-pointer rounded bg-slate-700" />
+              className="mt-2 h-8 w-full cursor-pointer rounded bg-neutral-200 dark:bg-slate-700" />
           )}
           <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
         </Section>
@@ -97,16 +97,16 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
         <Section title="Card Style">
           <div className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs text-white/50">Backdrop Color</label>
+              <label className="mb-1 block text-xs text-neutral-500 dark:text-white/50">Backdrop Color</label>
               <input type="color" value={rgbaToHex(settings.cardBackdropColor)}
                 onChange={(e) => {
                   const alpha = rgbaAlpha(settings.cardBackdropColor)
                   onUpdate({ cardBackdropColor: hexToRgba(e.target.value, alpha) })
                 }}
-                className="h-8 w-full cursor-pointer rounded bg-slate-700" />
+                className="h-8 w-full cursor-pointer rounded bg-neutral-200 dark:bg-slate-700" />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-white/50">Backdrop Opacity — {Math.round(rgbaAlpha(settings.cardBackdropColor) * 100)}%</label>
+              <label className="mb-1 block text-xs text-neutral-500 dark:text-white/50">Backdrop Opacity — {Math.round(rgbaAlpha(settings.cardBackdropColor) * 100)}%</label>
               <input type="range" min={0} max={1} step={0.05}
                 value={rgbaAlpha(settings.cardBackdropColor)}
                 onChange={(e) => {
@@ -116,17 +116,17 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
                 className="w-full" />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-white/50">Card Opacity — {Math.round(settings.cardOpacity * 100)}%</label>
+              <label className="mb-1 block text-xs text-neutral-500 dark:text-white/50">Card Opacity — {Math.round(settings.cardOpacity * 100)}%</label>
               <input type="range" min={0} max={1} step={0.05} value={settings.cardOpacity}
                 onChange={(e) => onUpdate({ cardOpacity: Number(e.target.value) })} className="w-full" />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-white/50">Border Radius — {settings.cardBorderRadius}px</label>
+              <label className="mb-1 block text-xs text-neutral-500 dark:text-white/50">Border Radius — {settings.cardBorderRadius}px</label>
               <input type="range" min={0} max={24} step={2} value={settings.cardBorderRadius}
                 onChange={(e) => onUpdate({ cardBorderRadius: Number(e.target.value) })} className="w-full" />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-white/50">Blur — {settings.cardBlur}px</label>
+              <label className="mb-1 block text-xs text-neutral-500 dark:text-white/50">Blur — {settings.cardBlur}px</label>
               <input type="range" min={0} max={24} step={2} value={settings.cardBlur}
                 onChange={(e) => onUpdate({ cardBlur: Number(e.target.value) })} className="w-full" />
             </div>
@@ -135,7 +135,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
 
         <Section title="Font">
           <select value={settings.fontFamily} onChange={(e) => onUpdate({ fontFamily: e.target.value })}
-            className="w-full rounded-lg bg-slate-700 px-3 py-2 text-sm text-white outline-none">
+            className="w-full rounded-lg bg-neutral-200 px-3 py-2 text-sm text-neutral-900 outline-none dark:bg-slate-700 dark:text-white">
             {FONT_OPTIONS.map((font) => (<option key={font.label} value={font.value} style={{ fontFamily: font.value }}>{font.label}</option>))}
           </select>
         </Section>
@@ -145,7 +145,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
             {(['small', 'medium', 'large'] as const).map((size) => (
               <button key={size} onClick={() => onUpdate({ gridSize: size })}
                 className={cn('flex-1 rounded-lg py-1.5 text-sm',
-                  settings.gridSize === size ? 'bg-blue-600 text-white' : 'bg-slate-700 text-white/60 hover:text-white')}>
+                  settings.gridSize === size ? 'bg-blue-600 text-white' : 'bg-neutral-200 text-neutral-600 hover:text-neutral-900 dark:bg-slate-700 dark:text-white/60 dark:hover:text-white')}>
                 {size[0]?.toUpperCase()}
               </button>
             ))}
@@ -164,10 +164,10 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
 
         {/* Keyboard Shortcuts */}
         <Section title="Keyboard Shortcuts">
-          <div className="space-y-2 text-sm text-white/50">
+          <div className="space-y-2 text-sm text-neutral-500 dark:text-white/50">
             <div className="flex items-center justify-between">
               <span>Search bookmarks</span>
-              <kbd className="rounded bg-slate-700 px-2 py-0.5 text-xs text-white/60">Ctrl+K</kbd>
+              <kbd className="rounded bg-neutral-200 px-2 py-0.5 text-xs text-neutral-500 dark:bg-slate-700 dark:text-white/60">Ctrl+K</kbd>
             </div>
           </div>
         </Section>
@@ -187,7 +187,7 @@ export function SettingsPanel({ settings, onUpdate, onClose, onBackgroundImageUp
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-2 block text-xs font-medium uppercase text-white/40">{title}</label>
+      <label className="mb-2 block text-xs font-medium uppercase text-neutral-400 dark:text-white/40">{title}</label>
       {children}
     </div>
   )

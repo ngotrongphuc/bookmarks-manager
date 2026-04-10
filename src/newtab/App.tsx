@@ -135,6 +135,14 @@ export function App() {
         if (bar?.children) {
           importFolders(bar.children)
         }
+        // Set default background based on system theme
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        settings.updateSettings({
+          background: {
+            type: 'color',
+            value: isDark ? '#0f172a' : '#f1f5f9',
+          },
+        })
         await storageSet('initialized', true)
         setShowWelcome(true)
       }
